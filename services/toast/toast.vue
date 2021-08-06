@@ -232,11 +232,17 @@ app.service('$toast', function() {
 								+ '<div class="mr-2 snotify-fa-icon">'
 									+ `<i class="${settings.icon}"></i>`
 								+ '</div>'
-								+ '<div class="media-body">'
-									+ `<h4 id="toast-text-${id}">${text || ''}</h4>`
-										+ '<div class="progress mb-1">'
-											+`<div id="toast-progress-${id}" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: ${progress || 0}%"></div>`
+								+ '<div class="media-body d-flex align-items-center">'
+									+ (text
+										? `<span id="toast-text-${id}">${text}</span>`
+										: ''
+									)
+									+ (progress > 0
+										? '<div class="progress mb-1">'
+												+ `<div id="toast-progress-${id}" class="progress-bar bg-primary progress-bar-striped progress-bar-animated" role="progressbar" style="width: ${progress || 0}%"></div>`
 										+ '</div>'
+										: ''
+									)
 									+ '</div>'
 								+ '</div>'
 							+ '</div>'
