@@ -238,7 +238,7 @@ app.service('$toast', function() {
 										: ''
 									)
 									+ (progress > 0
-										? '<div class="progress mb-1">'
+										? '<div class="progress mb-1 w-100">'
 												+ `<div id="toast-progress-${id}" class="progress-bar bg-primary progress-bar-striped progress-bar-animated" role="progressbar" style="width: ${progress || 0}%"></div>`
 										+ '</div>'
 										: ''
@@ -316,8 +316,8 @@ app.service('$toast', function() {
 	position: absolute;
 	width: 50px;
 	left: -6px;
-	top: -20px;
-	bottom: -20px;
+	top: -40px;
+	bottom: -40px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
