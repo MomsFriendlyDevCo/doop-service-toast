@@ -232,9 +232,9 @@ app.service('$toast', function() {
 								+ '<div class="mr-2 snotify-fa-icon">'
 									+ `<i class="${settings.icon}"></i>`
 								+ '</div>'
-								+ '<div class="media-body d-flex align-items-center">'
+								+ '<div class="media-body d-flex flex-column align-items-center justify-content-start">'
 									+ (text
-										? `<span id="toast-text-${id}">${text}</span>`
+										? `<div id="toast-text-${id}" class="w-100 mb-1">${text}</div>`
 										: ''
 									)
 									+ (progress > 0
