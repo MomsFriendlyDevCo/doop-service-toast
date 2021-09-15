@@ -1,6 +1,6 @@
 {
   "name": "@doop/service-toast",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "$toast notification service for the Doop framework",
   "repository": {
     "type": "git",

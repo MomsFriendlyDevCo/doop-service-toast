@@ -96,7 +96,7 @@ app.service('$toast', function() {
 		var output;
 
 		// Argument mangling / Promise mode {{{
-		if (_.isArray(options)) {
+		if (Array.isArray(options)) {
 			[text, options] = [text, {buttons: options}];
 		} else if (!options || !options.buttons) {
 			// Promise mode - if no options assume yes / no and return a promise
@@ -210,7 +210,7 @@ app.service('$toast', function() {
 
 		// Argument mangling {{{
 		if (!id) throw new Error('$toast.progress(id, [text], progress) requires an ID');
-		if (_.isNumber(text)) {
+		if (typeof text == 'number') {
 			[text, progress] = [undefined, text];
 		}
 		// }}}
@@ -282,22 +282,23 @@ app.service('$toast', function() {
 	*/
 	$toast.catch = (obj, options) => {
 		console.warn('Promise chain threw error:', obj);
-		if (_.isObject(obj) && obj.status && obj.status == -1 && obj.statusText && obj.statusText == '') return $toast.offline(true);
-		if (obj === 'cancel') return; // Silently ignore user cancelled actions
+		if (typeof obj == 'object' && obj.status && obj.status == -1 && obj.statusText && obj.statusText == '') return $toast.offline(true);
+		if (obj === 'cancel' || obj === 'SKIP') return; // Silently ignore user cancelled actions
 
 		$toast.error(
-			_.isUndefined(obj) ? 'An error has occured'
-			: _.isString(obj) ? obj
-			: _.isError(obj) ? obj.toString().replace(/^Error: /, '')
-			: _.has(obj, 'error') && obj.error ? obj.error
-			: _.has(obj, 'data') && _.isString(obj.data) && obj.data ? obj.data
-			: _.has(obj, 'data.errmsg') && obj.data.errmsg ? obj.data.errmsg
-			: _.has(obj, 'data.error') && obj.data.error ? obj.data.error
-			: _.has(obj, 'statusText') && obj.statusText ? obj.statusText
-			: _.has(obj, 'status') && obj.status === -1 ? 'Server connection failed'
-			: _.has(obj, 'message') && /Received: ".+"/.test(obj.message) ? (function(text) { var matches = /^.+Received: "(.+?)"/.exec(text); return matches[1]; }(obj.message))
-			: obj && _.isFunction(obj.toString) && obj.toString() !== '[object Object]' ? obj.toString() :
-			'An error has occured'
+			obj === undefined ? 'An error has occured'
+			: typeof obj == 'string' ? obj
+			: obj instanceof Error ? obj.toString().replace(/^Error: /, '')
+			: obj.error ? obj.error
+			: obj.err && typeof obj.err == 'string' ? obj.err
+			: obj?.data && typeof obj.data == 'string' ? obj.data
+			: obj?.data?.errmsg && typeof obj.data.errmsg == 'string' ? obj.data.errmsg
+			: obj?.data?.error && typeof obj.data.error == 'string' ? obj.data.error
+			: obj?.data?.err && typeof obj.data.err == 'string' ? obj.data.err
+			: obj?.data?.statusText && typeof obj.data.statusText == 'string' ? obj.data.statusText
+			: obj?.status === -1 ? 'Server connection failed'
+			: typeof obj == 'function' && obj.toString() !== '[object Object]' ? obj.toString()
+			: 'An error has occured'
 		, options);
 	};
 
